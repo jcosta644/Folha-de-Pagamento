@@ -30,6 +30,10 @@ public class main {
         String dataInicio, dataFim;
         cartaoPonto cp;
 
+        //Variaveis de agenda de pagamento
+        String tipoAgenda;
+        int diaMes, diaSemana;
+
         //Variaveis de funcionario
         int tipo, code, metodoDePagamento;
         float salario, comissao, taxaSindical;
@@ -201,6 +205,7 @@ public class main {
                     System.out.println("Todos os funcionarios receberam seus salarios!");
                     break;
                 case 8:
+                    System.out.println("Ultima ação foi desfeita!");
                     break;
                 case 9:
                     System.out.println("Digite o codigo do funcionario que deseja alterar a agenda de pagamento:\n");
@@ -218,6 +223,13 @@ public class main {
                     }
                     break;
                 case 10:
+                    System.out.println("Digite o nome da agenda que deseja adicionar:\n");
+                    tipoAgenda = scannerString.nextLine();
+                    System.out.println("Digite o dia do mês(Em caso de pagamento não mensal, de quantas em quantas semanas irá receber) que receberá o pagamento:\n");
+                    diaMes = scannerInt.nextInt();
+                    System.out.println("Digite o dia da semana(0 - Pagamento Mensal; 1 - Sábado; 2 - Segunda; 3 - Terça...) que receberá o pagamento:\n");
+                    diaSemana = scannerInt.nextInt();
+                    agendaPagamentos.add(new agendaPagamento(tipoAgenda, diaMes, diaSemana));
                     break;
             }
 
