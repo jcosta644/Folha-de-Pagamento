@@ -49,9 +49,9 @@ public class main {
         float valorVenda, taxaServico;
 
         //Agendas iniciais
-        agendaPagamentos.add(new agendaPagamento("semana", 1, 5));
+        agendaPagamentos.add(new agendaPagamento("semana", 1, 6));
         agendaPagamentos.add(new agendaPagamento("mensal", 30, 0));
-        agendaPagamentos.add(new agendaPagamento("bi-semanal", 2, 5));
+        agendaPagamentos.add(new agendaPagamento("bi-semanal", 2, 6));
 
         do {
             System.out.println("Menu:\n" +
@@ -203,6 +203,20 @@ public class main {
                     break;
                 case 7:
                     System.out.println("Todos os funcionarios receberam seus salarios!");
+                    Calendar dateNow = Calendar.getInstance();
+                    for(funcionario f : funcionarios) {
+                        if(f.getAgendaPagamento().getDiaSemana() == 0) {
+                            if(dateNow.DAY_OF_MONTH == f.getAgendaPagamento().getDiaMes()) {
+                                System.out.println("O funcionario: " + f.getNome() + ". Recebeu: " + (f.getSalario() + f.getComissaoBonus()) + " no dia de hoje!\n");
+                                f.setComissaoBonus(0);
+                            }
+                        } else {
+                            if(dateNow.DAY_OF_WEEK == f.getAgendaPagamento().getDiaSemana()) {
+                                System.out.println("O funcionario: " + f.getNome() + ". Recebeu: " + (f.getComissaoBonus() + f.getSalario()/f.getAgendaPagamento().getDiaMes()) + " no dia de hoje!\n");
+                                f.setComissaoBonus(0);
+                            }
+                        }
+                    }
                     break;
                 case 8:
                     System.out.println("Ultima ação foi desfeita!");
@@ -227,7 +241,7 @@ public class main {
                     tipoAgenda = scannerString.nextLine();
                     System.out.println("Digite o dia do mês(Em caso de pagamento não mensal, de quantas em quantas semanas irá receber) que receberá o pagamento:\n");
                     diaMes = scannerInt.nextInt();
-                    System.out.println("Digite o dia da semana(0 - Pagamento Mensal; 1 - Sábado; 2 - Segunda; 3 - Terça...) que receberá o pagamento:\n");
+                    System.out.println("Digite o dia da semana(0 - Pagamento Mensal; 1 - Domingo; 2 - Segunda; 3 - Terça...) que receberá o pagamento:\n");
                     diaSemana = scannerInt.nextInt();
                     agendaPagamentos.add(new agendaPagamento(tipoAgenda, diaMes, diaSemana));
                     break;
