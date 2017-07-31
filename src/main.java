@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -23,6 +24,7 @@ public class main {
         ArrayList<funcionario> funcionarios = new ArrayList<funcionario>();
         ArrayList<funcionario> funcionariosRemovidos = new ArrayList<funcionario>();
         ArrayList<cartaoPonto> cartoesPonto = new ArrayList<cartaoPonto>();
+        ArrayList<agendaPagamento> agendaPagamentos = new ArrayList<agendaPagamento>();
 
         //Variaveis de cartao de ponto
         String dataInicio, dataFim;
@@ -36,10 +38,16 @@ public class main {
 
         //Variaveis de busca
         int codeBusca;
+        String agendaBusca;
 
         //Variaveis auxiliares;
         int opc, opc2;
         float valorVenda, taxaServico;
+
+        //Agendas iniciais
+        agendaPagamentos.add(new agendaPagamento("semana", 1, 5));
+        agendaPagamentos.add(new agendaPagamento("mensal", 30, 0));
+        agendaPagamentos.add(new agendaPagamento("bi-semanal", 2, 5));
 
         do {
             System.out.println("Menu:\n" +
@@ -68,13 +76,26 @@ public class main {
                     salario = scannerFloat.nextFloat();
                     switch(tipo) {
                         case 1:
+                            for(agendaPagamento ap : agendaPagamentos) {
+                                if(ap.getTipoAgenda().equals("semanal")) {
+                                    funcionarios.add(new funcionario(nome, endereco, tipo, code, salario, ap));
+                                }
+                            }
                         case 2:
-                            funcionarios.add(new funcionario(nome, endereco, tipo, salario, code));
+                            for(agendaPagamento ap : agendaPagamentos) {
+                                if (ap.getTipoAgenda().equals("mensal")) {
+                                    funcionarios.add(new funcionario(nome, endereco, tipo, code, salario, ap));
+                                }
+                            }
                             break;
                         case 3:
                             System.out.println("Digite o percentual de comissao do funcionario:\n");
                             comissao = scannerFloat.nextFloat();
-                            funcionarios.add(new funcionario(nome, endereco, tipo, code, salario, comissao));
+                            for(agendaPagamento ap : agendaPagamentos) {
+                                if (ap.getTipoAgenda().equals("bi-semanal")) {
+                                    funcionarios.add(new funcionario(nome, endereco, tipo, code, salario, comissao, ap));
+                                }
+                            }
                             break;
                     }
                     code++;
@@ -182,6 +203,19 @@ public class main {
                 case 8:
                     break;
                 case 9:
+                    System.out.println("Digite o codigo do funcionario que deseja alterar a agenda de pagamento:\n");
+                    codeBusca = scannerInt.nextInt();
+                    for(funcionario f : funcionarios) {
+                        if(f.getCode() == codeBusca) {
+                            System.out.println("Digite o nome da nova agenda do funcionario:\n");
+                            agendaBusca = scannerString.nextLine();
+                            for(agendaPagamento ap : agendaPagamentos) {
+                                if(ap.getTipoAgenda().equals(agendaBusca)) {
+                                    f.setAgendaPagamento(ap);
+                                }
+                            }
+                        }
+                    }
                     break;
                 case 10:
                     break;

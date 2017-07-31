@@ -9,6 +9,7 @@ public class funcionario {
     private int tipo, code, metodoDePagamento;
     private float salario, comissao, comissaoBonus, taxaSindical;
     private ArrayList<cartaoPonto> cartoesPonto = new ArrayList<cartaoPonto>();
+    private agendaPagamento agendaPagamento;
     private boolean pertenceSindicato;
     //Tipo: 1 - hourly; 2 - salaried; 3 - commissioned
     //Atributo: 1 - salario horario; 2 - salario mensal; 3 - comissao
@@ -18,7 +19,7 @@ public class funcionario {
     public funcionario() {
     }
 
-    public funcionario(String nome, String endereco, int tipo, float salario, int code) {
+    public funcionario(String nome, String endereco, int tipo, int code, float salario, agendaPagamento agendaPagamento) {
         this.nome = nome;
         this.endereco = endereco;
         this.tipo = tipo;
@@ -28,9 +29,10 @@ public class funcionario {
         this.comissaoBonus = 0;
         this.metodoDePagamento = 2;
         this.pertenceSindicato = false;
+        this.agendaPagamento = agendaPagamento;
     }
 
-    public funcionario(String nome, String endereco, int tipo, int code, float salario, float comissao) {
+    public funcionario(String nome, String endereco, int tipo, int code, float salario, float comissao, agendaPagamento agendaPagamento) {
         this.nome = nome;
         this.endereco = endereco;
         this.tipo = tipo;
@@ -40,6 +42,7 @@ public class funcionario {
         this.comissaoBonus = 0;
         this.metodoDePagamento = 2;
         this.pertenceSindicato = false;
+        this.agendaPagamento = agendaPagamento;
     }
 
     public String getNome() {
@@ -128,5 +131,13 @@ public class funcionario {
 
     public void setPertenceSindicato(boolean pertenceSindicato) {
         this.pertenceSindicato = pertenceSindicato;
+    }
+
+    public agendaPagamento getAgendaPagamento() {
+        return agendaPagamento;
+    }
+
+    public void setAgendaPagamento(agendaPagamento agendaPagamento) {
+        this.agendaPagamento = agendaPagamento;
     }
 }
