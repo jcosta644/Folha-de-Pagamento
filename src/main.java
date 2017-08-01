@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Stack;
 import java.text.ParseException;
 import java.text.DateFormat;
 
@@ -22,9 +23,12 @@ public class main {
 
         //Variaveis de lista
         ArrayList<funcionario> funcionarios = new ArrayList<funcionario>();
-        ArrayList<funcionario> funcionariosRemovidos = new ArrayList<funcionario>();
         ArrayList<cartaoPonto> cartoesPonto = new ArrayList<cartaoPonto>();
         ArrayList<agendaPagamento> agendaPagamentos = new ArrayList<agendaPagamento>();
+
+        //Variaveis de backup
+        Stack<backup> undo = new Stack<>();
+        Stack<backup> redo = new Stack<>();
 
         //Variaveis de cartao de ponto
         String dataInicio, dataFim;
@@ -70,6 +74,7 @@ public class main {
 
             switch(opc) {
                 case 1:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o nome do funcionario:\n");
                     nome = scannerString.nextLine();
                     System.out.println("Digite o endereco do funcionario:\n");
@@ -105,17 +110,18 @@ public class main {
                     code++;
                     break;
                 case 2:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o codigo do funcionario que deseja remover:\n");
                     codeBusca = scannerInt.nextInt();
                     for(funcionario f : funcionarios) {
                         if(f.getCode() == codeBusca) {
-                            funcionariosRemovidos.add(f);
                             funcionarios.remove(f);
                             break;
                         }
                     }
                     break;
                 case 3:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o codigo do funcionario que deseja adicionar o cartao de ponto:\n");
                     codeBusca = scannerInt.nextInt();
                     for(funcionario f : funcionarios) {
@@ -133,6 +139,7 @@ public class main {
                     }
                     break;
                 case 4:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o codigo do funcionario que deseja adicionar a comissao da venda:\n");
                     codeBusca = scannerInt.nextInt();
                     for(funcionario f : funcionarios) {
@@ -144,6 +151,7 @@ public class main {
                     }
                     break;
                 case 5:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o codigo do funcionario que deseja cobrar a taxa de servico:\n");
                     codeBusca = scannerInt.nextInt();
                     for(funcionario f : funcionarios) {
@@ -155,6 +163,7 @@ public class main {
                     }
                     break;
                 case 6:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Digite o codigo do funcionario que deseja alterar os dados:\n");
                     codeBusca = scannerInt.nextInt();
                     for(funcionario f : funcionarios) {
@@ -202,6 +211,7 @@ public class main {
                     }
                     break;
                 case 7:
+                    undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
                     System.out.println("Todos os funcionarios receberam seus salarios!");
                     Calendar dateNow = Calendar.getInstance();
                     for(funcionario f : funcionarios) {
@@ -219,7 +229,30 @@ public class main {
                     }
                     break;
                 case 8:
-                    System.out.println("Ultima ação foi desfeita!");
+                    System.out.println("Digite a opcao desejada:\n" +
+                            "1 - Desfazer\n" +
+                            "2 - Refazer\n");
+                    opc2 = scannerInt.nextInt();
+                    switch (opc2) {
+                        case 1:
+                            if(!undo.isEmpty()) {
+                                redo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
+                                backup u = undo.pop();
+                                funcionarios = u.getFuncionarios();
+                                agendaPagamentos = u.getAgendaPagamentos();
+                                cartoesPonto = u.getCartoesPonto();
+                            }
+                            break;
+                        case 2:
+                            if(!redo.isEmpty()) {
+                                undo.push(new backup(funcionarios, cartoesPonto, agendaPagamentos));
+                                backup r = redo.pop();
+                                funcionarios = r.getFuncionarios();
+                                agendaPagamentos = r.getAgendaPagamentos();
+                                cartoesPonto = r.getCartoesPonto();
+                            }
+                            break;
+                    }
                     break;
                 case 9:
                     System.out.println("Digite o codigo do funcionario que deseja alterar a agenda de pagamento:\n");
