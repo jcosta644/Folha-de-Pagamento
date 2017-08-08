@@ -9,9 +9,15 @@ public class backup {
     private ArrayList<agendaPagamento> agendaPagamentos = new ArrayList<agendaPagamento>();
 
     public backup(ArrayList<funcionario> funcionarios, ArrayList<cartaoPonto> cartoesPonto, ArrayList<agendaPagamento> agendaPagamentos) {
-        this.funcionarios = funcionarios;
-        this.cartoesPonto = cartoesPonto;
-        this.agendaPagamentos = agendaPagamentos;
+        for(funcionario f : funcionarios) {
+            this.funcionarios.add(new funcionario(f.getNome(), f.getEndereco(), f.getTipo(), f.getCode(), f.getSalario(), f.getComissao(), new agendaPagamento(f.getAgendaPagamento().getTipoAgenda(), f.getAgendaPagamento().getDiaMes(), f.getAgendaPagamento().getDiaSemana())));
+        }
+        for(cartaoPonto cp : cartoesPonto) {
+            this.cartoesPonto.add(new cartaoPonto(cp.getInicio(), cp.getFim()));
+        }
+        for(agendaPagamento ap : agendaPagamentos) {
+            this.agendaPagamentos.add(new agendaPagamento(ap.getTipoAgenda(), ap.getDiaMes(), ap.getDiaSemana()));
+        }
     }
 
     public ArrayList<funcionario> getFuncionarios() {
